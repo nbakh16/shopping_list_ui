@@ -15,13 +15,15 @@ class PhotoGalleryApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget{
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final itemsList = ['Apple', 'Banana', 'Milk', 'Egg', 'Bread', 'Mango'];
 
   @override
   Widget build(BuildContext context) {
@@ -32,48 +34,32 @@ class HomeScreen extends StatelessWidget{
         actions: [
           IconButton(
             onPressed: (){
-              final snackBar = SnackBar(content: Text('Cart is empty'));
+              const snackBar = SnackBar(content: Text('Cart is empty'));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
             icon: const Icon(Icons.shopping_cart)
           )
         ],
       ),
-      body: ListView(
+      body: ListView.builder(
         physics: const BouncingScrollPhysics(),
-        children: [
-          MyListTile(title: 'Apple'),
-          MyListTile(title: 'Bread'),
-          MyListTile(title: 'Milk'),
-          MyListTile(title: 'Egg'),
-          MyListTile(title: 'Banana'),
-        ],
+        itemCount: itemsList.length,
+        itemBuilder: (context, index){
+          return Card(
+            child: ListTile(
+              leading: const Icon(Icons.shopping_basket),
+              title: Text(
+                itemsList[index],
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black
+                ),
+              ),
+            )
+          );
+        },
       )
-    );
-  }
-
-}
-
-class MyListTile extends StatelessWidget {
-  MyListTile({
-    super.key,
-    required this.title
-  });
-
-  String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.shopping_basket),
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)
-      ),
-      onTap: (){
-        final snackBar = SnackBar(content: Text(title));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      },
     );
   }
 }
